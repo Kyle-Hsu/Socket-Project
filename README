@@ -1,0 +1,70 @@
+c. What you have done in the assignment
+
+I have completed the socket programming project requirements. To start, my edge
+server, my two backend OR and AND servers will boot up. The user can input a list of
+bitwise operations using ANDs and ORs to complete. using the client file I will send 
+the list to the edge server. The edge server parses the lines and sends respective 
+information to the backend servers who then reply a computed value and to the edge
+server who then relays the information to the client.
+
+d. What your code files are and what each one of them does. (Please do not
+repeat the project description, just name your code files and briefly mention
+what they do).
+
+client.c - it will retreive the lines from the indicated file, and send line by line 
+to the edge server
+
+edge.c - this is the edge server file. it will collect all lines from the client and 
+send them line by line to the backend servers, in my case I start with all the AND 
+operations then the OR operations. 
+
+server_and.c - this is the backend AND server that accepts UDP Datagrams from the edge
+server and computes the bitwise AND of two binary values. It then sends it back to the
+edge server.
+
+server_or.c - this is almost exactly the same as the server_and file, except it computes
+the bitwise OR of the two values.
+
+e. What the TA should do to run your programs. (Any specific order of events
+should be mentioned.)
+
+1. Open 4 instances of Terminal
+2. type "make all" in any of the four.
+3. choose a window and type "make server_and", it will be the window for the AND server
+4. choose a different one and type "make server_or", it will be the AND server
+5. choose a third one and type "make edge", it will be the edge server
+6. finally in the last one run "./client <input_file_name>" where the input file will
+consist of lines of "<and/or>,<binary value>,<binary value>";
+
+f. The format of all the messages exchanged.
+
+The client.c file sends char* of a whole line to edge server.
+
+The edge server parses the lines into three substrings, the operations, binary value 1
+and binary value 2. The edge server then pads the values with leading zeros until they
+are 10 digits, and sends the binary values as char* in pairs to their respective 
+backend-server. It also sends a sequence number along with each line.
+
+The backend-servers compute the bitwise operations and returns an int value to the edge
+server. 
+
+The edge server relays the int value to the client.
+
+
+g. Any idiosyncrasy of your project. It should say under what conditions the
+project fails, if any.
+
+Everything tested properly. 
+
+
+h. Reused Code: Did you use code from anywhere for your project? If not, say
+so. If so, say what functions and where they're from. (Also identify this with a comment in the source code.)
+
+The client file references the BEEJ TCP socket client example. 
+
+The edge file references the BEEJ TCP socket server example.
+
+The edge file also references the UDP Datagram talker.c file from BEEJ.
+For the two different sockets, I added AND or OR in prefix to the variables. 
+
+The two backend servers reference the UDP datagram listener.c file from BEEJ.
